@@ -4,6 +4,9 @@
     <title>Mappedin JS v6 Getting Started</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       * {
         margin: 0;
@@ -14,15 +17,333 @@
         width: 100%;
         height: 100%;
       }
+      body { position: relative; }
       #mappedin-map {
         height: 100%;
         width: 100%;
         position: relative;
       }
+      #readers-panel {
+        position: fixed;
+        top: 64px;
+        right: 24px;
+        width: 300px;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(165deg, rgba(255,255,255,0.99) 0%, rgba(251,253,255,0.97) 50%, rgba(248,250,252,0.98) 100%);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.8);
+        box-shadow:
+          0 0 0 1px rgba(0,0,0,0.03),
+          0 1px 2px rgba(0,0,0,0.04),
+          0 4px 8px rgba(0,0,0,0.04),
+          0 16px 32px -8px rgba(0,0,0,0.1),
+          0 32px 64px -16px rgba(0,0,0,0.08),
+          inset 0 1px 0 rgba(255,255,255,0.9);
+        z-index: 100000;
+        pointer-events: auto;
+        overflow: hidden;
+        animation: panel-appear 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      @keyframes panel-appear {
+        from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      #readers-panel::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+        border-radius: 20px 0 0 20px;
+      }
+      #readers-panel:hover {
+        box-shadow:
+          0 0 0 1px rgba(0,0,0,0.04),
+          0 2px 4px rgba(0,0,0,0.05),
+          0 8px 16px rgba(0,0,0,0.06),
+          0 24px 48px -8px rgba(0,0,0,0.14),
+          0 48px 96px -16px rgba(0,0,0,0.1),
+          inset 0 1px 0 rgba(255,255,255,0.95);
+      }
+      #readers-panel.collapsed {
+        width: auto;
+        min-width: 140px;
+      }
+      #readers-panel.collapsed #readers-panel-body {
+        display: none;
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      #readers-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 20px 24px 20px 28px;
+        cursor: pointer;
+        user-select: none;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+        background: linear-gradient(180deg, rgba(14,165,233,0.06) 0%, rgba(14,165,233,0.02) 50%, transparent 100%);
+        border-bottom: 1px solid rgba(15,23,42,0.05);
+        transition: background 0.25s ease;
+      }
+      #readers-panel-header:hover { background: linear-gradient(180deg, rgba(14,165,233,0.1) 0%, rgba(14,165,233,0.04) 50%, transparent 100%); }
+      #readers-panel.collapsed #readers-panel-header { border-bottom: none; }
+      #readers-panel-header span {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #readers-panel-header span::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        box-shadow: 0 0 0 3px rgba(14,165,233,0.25), 0 2px 4px rgba(14,165,233,0.3);
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { box-shadow: 0 0 0 3px rgba(14,165,233,0.25), 0 2px 4px rgba(14,165,233,0.3); }
+        50% { box-shadow: 0 0 0 5px rgba(14,165,233,0.15), 0 2px 4px rgba(14,165,233,0.3); }
+      }
+      #readers-panel-toggle {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 300;
+        line-height: 1;
+        color: #64748b;
+        background: rgba(15,23,42,0.04);
+        border: 1px solid rgba(15,23,42,0.08);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      }
+      #readers-panel-toggle:hover {
+        background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(2,132,199,0.08));
+        color: #0284c7;
+        border-color: rgba(14,165,233,0.25);
+        transform: scale(1.05);
+      }
+      .panel-btn {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #64748b;
+        background: rgba(15,23,42,0.04);
+        border: 1px solid rgba(15,23,42,0.08);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .panel-btn:hover { color: #0284c7; background: rgba(14,165,233,0.1); border-color: rgba(14,165,233,0.2); }
+      #readers-panel-body {
+        padding: 20px 24px 24px 28px;
+        max-height: 440px;
+        overflow-y: auto;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+      #readers-panel-body::-webkit-scrollbar { width: 8px; }
+      #readers-panel-body::-webkit-scrollbar-track { background: rgba(15,23,42,0.02); border-radius: 4px; }
+      #readers-panel-body::-webkit-scrollbar-thumb {
+        background: rgba(15,23,42,0.12);
+        border-radius: 4px;
+      }
+      #readers-panel-body::-webkit-scrollbar-thumb:hover { background: rgba(15,23,42,0.18); }
+      #readers-panel h3 {
+        font-size: 10px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        margin: 24px 0 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid rgba(14,165,233,0.15);
+      }
+      #readers-panel h3:first-of-type { margin-top: 0; }
+      .reader-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1e293b;
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.95) 100%);
+        border: 1px solid rgba(15,23,42,0.06);
+        border-radius: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      }
+      .reader-row:last-child { margin-bottom: 0; }
+      .reader-row:hover {
+        background: linear-gradient(135deg, #fff 0%, rgba(248,250,252,0.98) 100%);
+        border-color: rgba(14,165,233,0.2);
+        box-shadow: 0 4px 12px rgba(14,165,233,0.12), 0 2px 4px rgba(0,0,0,0.04);
+        transform: translateX(2px);
+      }
+      .reader-row .marker {
+        width: 20px; height: 24px;
+        flex-shrink: 0;
+        display: inline-flex;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+      }
+      .reader-row .marker svg { width: 100%; height: 100%; }
+      .reader-row span:nth-child(2) { flex: 1; font-weight: 700; font-size: 14px; color: #0f172a; letter-spacing: -0.02em; }
+      .reader-row[data-reader-name] { cursor: pointer; }
+      .lobby-area-group {
+        margin-bottom: 12px;
+      }
+      .lobby-area-group:last-child { margin-bottom: 0; }
+      .lobby-children-list {
+        margin-left: 28px;
+        margin-top: 6px;
+        padding-left: 12px;
+        border-left: 2px solid rgba(14,165,233,0.2);
+      }
+      .child-row {
+        padding: 10px 14px;
+        margin-bottom: 6px;
+      }
+      .child-row:last-child { margin-bottom: 0; }
+      .child-row .marker { width: 16px; height: 20px; flex-shrink: 0; }
+      .child-row .marker svg { width: 100%; height: 100%; }
+      .reader-row .coords {
+        font-size: 11px;
+        font-weight: 600;
+        color: #94a3b8;
+        font-family: 'SF Mono', 'Monaco', 'JetBrains Mono', ui-monospace, monospace;
+        letter-spacing: 0.04em;
+      }
+      .reader-dialog {
+        border: none;
+        border-radius: 20px;
+        padding: 0;
+        max-width: 90vw;
+        width: 360px;
+        box-shadow: 0 24px 48px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.05);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        z-index: 1000002;
+      }
+      .reader-dialog::backdrop {
+        background: rgba(15,23,42,0.4);
+        backdrop-filter: blur(4px);
+      }
+      .reader-dialog-content { padding: 0; }
+      .reader-dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        background: linear-gradient(180deg, rgba(14,165,233,0.08) 0%, transparent 100%);
+        border-bottom: 1px solid rgba(15,23,42,0.06);
+      }
+      .reader-dialog-header h2 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+      }
+      .reader-dialog-close {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        line-height: 1;
+        color: #64748b;
+        background: rgba(15,23,42,0.04);
+        border: 1px solid rgba(15,23,42,0.08);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .reader-dialog-close:hover {
+        color: #0284c7;
+        background: rgba(14,165,233,0.1);
+      }
+      .reader-dialog-body {
+        padding: 20px 24px 24px;
+        max-height: 360px;
+        overflow-y: auto;
+      }
+      .reader-dialog-section {
+        margin-bottom: 20px;
+      }
+      .reader-dialog-section:last-child { margin-bottom: 0; }
+      .reader-dialog-section h3 {
+        font-size: 10px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 12px;
+      }
+      .reader-dialog-child {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        font-size: 13px;
+        background: rgba(22,163,74,0.06);
+        border: 1px solid rgba(22,163,74,0.15);
+        border-radius: 10px;
+        margin-bottom: 8px;
+      }
+      .reader-dialog-child:last-child { margin-bottom: 0; }
+      .reader-dialog-child .marker {
+        width: 20px; height: 24px;
+        flex-shrink: 0;
+        display: inline-flex;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+      }
+      .reader-dialog-child .marker svg { width: 100%; height: 100%; }
+      .reader-dialog-child .child-name { font-weight: 600; color: #0f172a; }
+      .reader-dialog-child .child-meta { font-size: 11px; color: #94a3b8; }
     </style>
   </head>
   <body>
     <div id="mappedin-map"></div>
+    <div id="readers-panel" style="display: none">
+      <div id="readers-panel-header" title="Click to expand/collapse">
+        <span>Areas</span>
+        <button id="readers-panel-toggle" type="button">−</button>
+      </div>
+      <div id="readers-panel-body">
+        <div id="areas-section">
+          <h3>Areas</h3>
+          <div id="readers-list"></div>
+        </div>
+      </div>
+    </div>
+    <dialog id="reader-dialog" class="reader-dialog">
+      <div class="reader-dialog-content">
+        <header class="reader-dialog-header">
+          <h2 id="reader-dialog-title">Lobby</h2>
+          <button type="button" class="reader-dialog-close" aria-label="Close">×</button>
+        </header>
+        <div id="reader-dialog-body" class="reader-dialog-body">
+          <div id="reader-dialog-children" class="reader-dialog-section"></div>
+        </div>
+      </div>
+    </dialog>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

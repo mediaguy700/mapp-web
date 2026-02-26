@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tagalong - Sign In</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      .login-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px;
+        position: relative;
+        background: linear-gradient(165deg, #475569 0%, #64748b 40%, #475569 100%);
+      }
+      .login-bg {
+        position: absolute;
+        inset: -10%;
+        background: url('./splash-map-bg.png') center center no-repeat;
+        background-size: cover;
+        animation: login-pan 30s ease-in-out infinite;
+        opacity: 0.32;
+        filter: brightness(0.95) contrast(1.4) saturate(1.2);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+      .login-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(71,85,105,0.2) 0%, transparent 40%, rgba(71,85,105,0.25) 100%);
+      }
+      .login-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(71,85,105,0.4) 100%);
+      }
+      @keyframes login-pan {
+        0%, 100% { transform: scale(1) translate(0, 0) translateZ(0); }
+        25% { transform: scale(1.05) translate(2%, 1%) translateZ(0); }
+        50% { transform: scale(1.08) translate(-1%, 2%) translateZ(0); }
+        75% { transform: scale(1.05) translate(1%, -1%) translateZ(0); }
+      }
+      .login-page .login-card {
+        position: relative;
+        z-index: 1;
+      }
+      .login-card {
+        width: 100%;
+        max-width: 360px;
+        background: #ffffff;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        padding: 40px 36px;
+        animation: login-card-appear 0.4s ease-out;
+      }
+      @keyframes login-card-appear {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .login-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: #0369a1;
+        border-radius: 8px 0 0 8px;
+      }
+      .login-form label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .login-form input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        margin-bottom: 18px;
+        background: #fff;
+        color: #111827;
+        transition: border-color 0.15s ease;
+      }
+      .login-form input:hover {
+        border-color: #9ca3af;
+      }
+      .login-form input:focus {
+        outline: none;
+        border-color: #0369a1;
+        box-shadow: 0 0 0 2px rgba(3,105,161,0.15);
+      }
+      .login-form input::placeholder {
+        color: #9ca3af;
+      }
+      .login-btn {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        background: #0369a1;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        margin-top: 4px;
+      }
+      .login-btn:hover {
+        background: #0284c7;
+      }
+      .login-btn:active {
+        background: #0c4a6e;
+      }
+      .login-footer {
+        margin-top: 24px;
+        text-align: center;
+      }
+      .login-footer a {
+        color: #6b7280;
+        font-size: 13px;
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+      .login-footer a:hover {
+        color: #0369a1;
+      }
+      .login-logo {
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .login-logo img {
+        height: 140px;
+        width: auto;
+        display: inline-block;
+      }
+      @media (max-width: 768px) {
+        .login-page { padding: 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="login-bg" aria-hidden="true"></div>
+      <div class="login-card">
+        <div class="login-logo">
+          <img src="./intramap-logo.png" alt="IntraMap SYSTEMS" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+          <div class="login-logo-fallback" style="display:none; flex-direction:column; align-items:center; gap:8px;">
+              <svg width="93" height="140" viewBox="0 0 24 36" fill="none"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24c0-6.6-5.4-12-12-12z" fill="#0284c7"/><circle cx="12" cy="12" r="5" fill="white"/></svg>
+            <span style="font:600 18px Inter,sans-serif; color:#0f172a;">IntraMap Systems</span>
+          </div>
+        </div>
+        <form class="login-form" id="login-form">
+          <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username" />
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+          <button type="submit" class="login-btn">Sign in</button>
+        </form>
+        <div class="login-footer">
+          <a href="#">Forgot password?</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        sessionStorage.setItem('tagalong-loggedin', '1');
+        window.location.href = './index.html';
+      });
+    </script>
+  </body>
+</html>

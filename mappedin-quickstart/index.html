@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Mappedin JS v6 Getting Started</title>
+    <title>Tagalong</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -344,6 +344,11 @@
         </div>
       </div>
     </dialog>
+    <script>
+      if (!sessionStorage.getItem('tagalong-loggedin')) {
+        window.location.replace('./splash.html');
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -6,6 +6,16 @@ export default defineConfig(({ mode }) => {
   const apiKey = env.BLE_API_KEY ?? 'MlzzVbn4og1AN93aBra5pa9OTKZs716j35uFuV1I';
 
   return {
+    base: './',
+    build: {
+      rollupOptions: {
+        input: {
+          main: 'index.html',
+          login: 'login.html',
+          splash: 'splash.html',
+        },
+      },
+    },
     server: {
       proxy: {
         '/api': {

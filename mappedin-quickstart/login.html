@@ -102,6 +102,54 @@
       .login-form input::placeholder {
         color: #9ca3af;
       }
+      .login-form .input-wrap {
+        position: relative;
+        margin-bottom: 16px;
+      }
+      .login-form .input-wrap input {
+        margin-bottom: 0;
+        padding-right: 48px;
+      }
+      .login-form .input-wrap input.pass-visible {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .login-form .input-wrap #password.pass-hidden {
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .login-form .input-wrap input.pass-visible.pass-hidden {
+        display: none !important;
+      }
+      .login-form .toggle-visibility {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: #64748b;
+        cursor: pointer;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s, background 0.2s;
+        z-index: 2;
+        pointer-events: auto;
+      }
+      .login-form .toggle-visibility:hover {
+        color: #0ea5e9;
+        background: rgba(14,165,233,0.1);
+      }
       .login-error {
         display: none;
         color: #dc2626;
@@ -173,8 +221,17 @@
         </div>
         <form class="login-form" id="login-form">
           <div id="login-error" class="login-error" role="alert"></div>
-          <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username" />
-          <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password" />
+          <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username" aria-label="Username" />
+          <div class="input-wrap">
+            <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password" aria-label="Password" />
+            <input type="text" id="password-text" class="pass-visible pass-hidden" placeholder="Password" autocomplete="off" aria-label="Password (visible)" tabindex="-1" />
+            <button type="button" class="toggle-visibility" id="toggle-password" aria-label="Show password" title="Show password">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
           <button type="submit" class="login-btn">Sign in</button>
         </form>
         <div class="login-footer">

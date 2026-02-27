@@ -348,10 +348,9 @@
       </div>
     </dialog>
     <script>
-      // For testing: show map first (auth check disabled)
-      // if (!sessionStorage.getItem('intramap-token') && !sessionStorage.getItem('intramap-loggedin')) {
-      //   window.location.replace('./login.html');
-      // }
+      if (!sessionStorage.getItem('intramap-token') && !sessionStorage.getItem('intramap-loggedin')) {
+        window.location.replace('./login.html');
+      }
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>

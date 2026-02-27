@@ -56,11 +56,17 @@ async function authRequest<T>(
   return JSON.parse(text) as T;
 }
 
+/** Login request body - matches API: {"username": "...", "password": "..."} */
+const loginBody = (username: string, password: string) => ({ username, password });
+
+/** Login response - API returns token, user, expires_at */
+type LoginResponse = { token?: string; access_token?: string; user?: object; expires_at?: string };
+
 export const authApi = {
   login: (username: string, password: string) =>
-    authRequest<{ token?: string; user?: object }>('/auth/login', {
+    authRequest<LoginResponse>('/auth/login', {
       method: 'POST',
-      body: { username, password },
+      body: loginBody(username, password),
     }),
 
   register: (username: string, password: string, email?: string) =>

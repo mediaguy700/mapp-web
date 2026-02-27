@@ -320,7 +320,10 @@
     </style>
   </head>
   <body>
-    <div id="mappedin-map"></div>
+    <div id="mappedin-map" style="display:flex;align-items:center;justify-content:center;color:#64748b;font-family:sans-serif;font-size:16px">Loading map…</div>
+    <script>
+      (function(){var e=document.getElementById('mappedin-map');if(e)e.textContent='JS running…';})();
+    </script>
     <div id="readers-panel" style="display: none">
       <div id="readers-panel-header" title="Click to expand/collapse">
         <span>Areas</span>
@@ -345,9 +348,10 @@
       </div>
     </dialog>
     <script>
-      if (!sessionStorage.getItem('intramap-loggedin')) {
-        window.location.replace('./splash.html');
-      }
+      // For testing: show map first (auth check disabled)
+      // if (!sessionStorage.getItem('intramap-token') && !sessionStorage.getItem('intramap-loggedin')) {
+      //   window.location.replace('./login.html');
+      // }
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>

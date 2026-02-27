@@ -1,4 +1,4 @@
-// BLE API: use env or defaults. In dev, proxy /api to BLE_API_URL
+// API: Readers, Events, Auth - see API_REFERENCE.md. In dev, proxy /api to base URL.
 const BASE_URL =
   import.meta.env.DEV
     ? '/api'

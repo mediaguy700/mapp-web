@@ -59,26 +59,16 @@
       .login-card {
         width: 100%;
         max-width: 420px;
-        background: #ffffff;
-        border-radius: 8px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.9);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(14,165,233,0.1);
         padding: 28px 40px 44px;
-        animation: login-card-appear 0.4s ease-out;
+        animation: login-card-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       @keyframes login-card-appear {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .login-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 3px;
-        background: #0369a1;
-        border-radius: 8px 0 0 8px;
+        from { opacity: 0; transform: translateY(20px) scale(0.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
       }
       .login-form label {
         display: block;
@@ -92,25 +82,35 @@
         width: 100%;
         padding: 14px 16px;
         font-size: 15px;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        background: #f9fafb;
+        border: 2px solid #e2e8f0;
+        border-radius: 14px;
+        margin-bottom: 16px;
+        background: #fff;
         color: #111827;
-        transition: all 0.2s ease;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .login-form input:hover {
-        background: #fff;
-        border-color: #d1d5db;
+        border-color: #bae6fd;
+        box-shadow: 0 0 0 3px rgba(56,189,248,0.15);
       }
       .login-form input:focus {
         outline: none;
-        border-color: #0369a1;
+        border-color: #0ea5e9;
         background: #fff;
-        box-shadow: 0 0 0 3px rgba(3,105,161,0.12);
+        box-shadow: 0 0 0 4px rgba(56,189,248,0.2);
       }
       .login-form input::placeholder {
         color: #9ca3af;
+      }
+      .login-error {
+        display: none;
+        color: #dc2626;
+        font-size: 13px;
+        margin-bottom: 12px;
+        padding: 10px 14px;
+        background: #fef2f2;
+        border-radius: 10px;
+        border: 1px solid #fecaca;
       }
       .login-btn {
         width: 100%;
@@ -118,18 +118,20 @@
         font-size: 15px;
         font-weight: 600;
         color: #fff;
-        background: #0369a1;
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
         border: none;
-        border-radius: 6px;
+        border-radius: 14px;
         cursor: pointer;
-        transition: background 0.15s ease;
-        margin-top: 4px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 8px;
+        box-shadow: 0 4px 14px rgba(14,165,233,0.35);
       }
       .login-btn:hover {
-        background: #0284c7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(14,165,233,0.45);
       }
       .login-btn:active {
-        background: #0c4a6e;
+        transform: translateY(0);
       }
       .login-footer {
         margin-top: 24px;
@@ -142,10 +144,10 @@
         transition: color 0.15s ease;
       }
       .login-footer a:hover {
-        color: #0369a1;
+        color: #0ea5e9;
       }
       .login-logo {
-        margin-bottom: 36px;
+        margin-bottom: -4px;
         text-align: center;
       }
       .login-logo img {
@@ -170,10 +172,9 @@
           </div>
         </div>
         <form class="login-form" id="login-form">
-          <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username" />
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+          <div id="login-error" class="login-error" role="alert"></div>
+          <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username" />
+          <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password" />
           <button type="submit" class="login-btn">Sign in</button>
         </form>
         <div class="login-footer">
@@ -181,12 +182,6 @@
         </div>
       </div>
     </div>
-    <script>
-      document.getElementById('login-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        sessionStorage.setItem('intramap-loggedin', '1');
-        window.location.href = './index.html';
-      });
-    </script>
+    <script type="module" src="/src/login.ts"></script>
   </body>
 </html>

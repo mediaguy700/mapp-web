@@ -51,7 +51,11 @@ export function setupQrScanDialog() {
 
       await html5QrCode.start(
         cameras[0].id,
-        { fps: 10, qrbox: { width: 200, height: 200 } },
+        {
+          fps: 10,
+          qrbox: { width: 200, height: 200 },
+          aspectRatio: 1,
+        },
         (decodedText) => {
           showResult(decodedText);
           stopScanner();
@@ -81,7 +85,6 @@ export function setupQrScanDialog() {
     e.preventDefault();
     e.stopPropagation();
     dialog.showModal();
-    // Start scanner immediately so camera permission is requested within the user gesture
     startScanner();
   });
 

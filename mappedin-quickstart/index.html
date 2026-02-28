@@ -84,40 +84,43 @@
         align-items: center;
         justify-content: space-between;
         gap: 14px;
-        padding: 20px 24px 20px 28px;
+        padding: 22px 24px 22px 28px;
         cursor: pointer;
         user-select: none;
         font-size: 17px;
         font-weight: 700;
         letter-spacing: -0.03em;
         color: #0f172a;
-        background: linear-gradient(180deg, rgba(14,165,233,0.06) 0%, rgba(14,165,233,0.02) 50%, transparent 100%);
-        border-bottom: 1px solid rgba(15,23,42,0.05);
-        transition: background 0.25s ease;
+        background: linear-gradient(135deg, rgba(14,165,233,0.08) 0%, rgba(2,132,199,0.04) 50%, rgba(14,165,233,0.02) 100%);
+        border-bottom: 1px solid rgba(14,165,233,0.08);
+        transition: background 0.25s ease, box-shadow 0.25s ease;
       }
-      #readers-panel-header:hover { background: linear-gradient(180deg, rgba(14,165,233,0.1) 0%, rgba(14,165,233,0.04) 50%, transparent 100%); }
+      #readers-panel-header:hover {
+        background: linear-gradient(135deg, rgba(14,165,233,0.12) 0%, rgba(2,132,199,0.06) 50%, rgba(14,165,233,0.03) 100%);
+        box-shadow: inset 0 -1px 0 0 rgba(14,165,233,0.06);
+      }
       #readers-panel.collapsed #readers-panel-header { border-bottom: none; }
       #readers-panel-header span {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
       }
       #readers-panel-header span::before {
         content: '';
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         background: linear-gradient(135deg, #0ea5e9, #0284c7);
-        box-shadow: 0 0 0 3px rgba(14,165,233,0.25), 0 2px 4px rgba(14,165,233,0.3);
+        box-shadow: 0 0 0 3px rgba(14,165,233,0.2), 0 2px 6px rgba(14,165,233,0.35);
         animation: pulse-dot 2s ease-in-out infinite;
       }
       @keyframes pulse-dot {
-        0%, 100% { box-shadow: 0 0 0 3px rgba(14,165,233,0.25), 0 2px 4px rgba(14,165,233,0.3); }
-        50% { box-shadow: 0 0 0 5px rgba(14,165,233,0.15), 0 2px 4px rgba(14,165,233,0.3); }
+        0%, 100% { box-shadow: 0 0 0 3px rgba(14,165,233,0.2), 0 2px 6px rgba(14,165,233,0.35); }
+        50% { box-shadow: 0 0 0 6px rgba(14,165,233,0.1), 0 2px 6px rgba(14,165,233,0.35); }
       }
       #readers-panel-toggle {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -125,9 +128,9 @@
         font-weight: 300;
         line-height: 1;
         color: #64748b;
-        background: rgba(15,23,42,0.04);
+        background: rgba(15,23,42,0.05);
         border: 1px solid rgba(15,23,42,0.08);
-        border-radius: 10px;
+        border-radius: 12px;
         cursor: pointer;
         transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
       }
@@ -138,20 +141,25 @@
         transform: scale(1.05);
       }
       .panel-btn {
-        width: 28px;
-        height: 28px;
+        width: 34px;
+        height: 34px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
+        font-size: 16px;
         color: #64748b;
-        background: rgba(15,23,42,0.04);
+        background: rgba(15,23,42,0.05);
         border: 1px solid rgba(15,23,42,0.08);
-        border-radius: 8px;
+        border-radius: 12px;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
       }
-      .panel-btn:hover { color: #0284c7; background: rgba(14,165,233,0.1); border-color: rgba(14,165,233,0.2); }
+      .panel-btn:hover {
+        color: #0284c7;
+        background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(2,132,199,0.08));
+        border-color: rgba(14,165,233,0.25);
+        transform: scale(1.05);
+      }
       #readers-panel-body {
         padding: 20px 24px 24px 28px;
         max-height: 440px;
@@ -317,6 +325,162 @@
       .reader-dialog-child .marker svg { width: 100%; height: 100%; }
       .reader-dialog-child .child-name { font-weight: 600; color: #0f172a; }
       .reader-dialog-child .child-meta { font-size: 11px; color: #94a3b8; }
+      #qr-scan-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        border: none;
+        border-radius: 20px;
+        padding: 0;
+        max-width: 95vw;
+        width: 340px;
+        max-height: 90vh;
+        overflow-y: auto;
+        background: #fff;
+        box-shadow:
+          0 0 0 1px rgba(0,0,0,0.03),
+          0 2px 4px rgba(0,0,0,0.04),
+          0 12px 24px -4px rgba(0,0,0,0.08),
+          0 24px 48px -8px rgba(0,0,0,0.06);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        z-index: 1000003;
+        overflow-x: hidden;
+        animation: qr-dialog-appear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes qr-dialog-appear {
+        from { opacity: 0; transform: translate(-50%, -50%) scale(0.97); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      }
+      #qr-scan-dialog::backdrop {
+        background: rgba(15,23,42,0.5);
+        backdrop-filter: blur(10px);
+      }
+      #qr-scan-dialog .qr-dialog-header {
+        position: relative;
+        padding: 0;
+        border: none;
+      }
+      #qr-scan-dialog .qr-dialog-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 1;
+        color: #94a3b8;
+        background: rgba(0,0,0,0.04);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 2;
+      }
+      #qr-scan-dialog .qr-dialog-close:hover {
+        color: #0f172a;
+        background: rgba(0,0,0,0.08);
+      }
+      #qr-scan-dialog .qr-dialog-body {
+        padding: 24px;
+        padding-top: 48px;
+      }
+      #qr-scan-dialog .qr-dialog-hint {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 16px;
+        padding: 12px 14px 12px 16px;
+        background: rgba(14,165,233,0.05);
+        border-radius: 10px;
+        border-left: 3px solid rgba(14,165,233,0.4);
+        line-height: 1.5;
+      }
+      #qr-scan-dialog .qr-scanner-wrapper {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #0f172a;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      }
+      #qr-scan-dialog .qr-scanner-wrapper::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border: 2px solid rgba(14,165,233,0.15);
+        border-radius: 14px;
+        pointer-events: none;
+      }
+      #qr-scan-dialog #qr-reader-dialog {
+        width: 100%;
+        aspect-ratio: 1;
+        max-height: 260px;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      #qr-scan-dialog .qr-result-box {
+        margin-top: 16px;
+        padding: 14px 16px;
+        background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(34,197,94,0.05) 100%);
+        border: 1px solid rgba(34,197,94,0.25);
+        border-radius: 14px;
+        display: none;
+        animation: qr-result-appear 0.3s ease;
+      }
+      @keyframes qr-result-appear {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      #qr-scan-dialog .qr-result-box.show {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      #qr-scan-dialog .qr-result-box .qr-result-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        flex-shrink: 0;
+        background: rgba(34,197,94,0.25);
+        border-radius: 10px;
+        color: #15803d;
+      }
+      #qr-scan-dialog .qr-result-box .qr-result-content { flex: 1; min-width: 0; }
+      #qr-scan-dialog .qr-result-box .qr-result-label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #166534;
+      }
+      #qr-scan-dialog .qr-result-box pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-all;
+        font-size: 12px;
+        font-family: 'SF Mono', 'Monaco', ui-monospace, monospace;
+        line-height: 1.5;
+        color: #0f172a;
+      }
+      #qr-scan-dialog .qr-error-box {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: rgba(239,68,68,0.06);
+        border: 1px solid rgba(239,68,68,0.2);
+        border-radius: 12px;
+        font-size: 14px;
+        color: #b91c1c;
+        display: none;
+        line-height: 1.5;
+      }
+      #qr-scan-dialog .qr-error-box.show { display: block; }
     </style>
   </head>
   <body>
@@ -327,7 +491,10 @@
     <div id="readers-panel" style="display: none">
       <div id="readers-panel-header" title="Click to expand/collapse">
         <span>Areas</span>
-        <button id="readers-panel-toggle" type="button">−</button>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button type="button" id="btn-scan-qr" class="panel-btn" title="Scan Bracelet">📷</button>
+          <button id="readers-panel-toggle" type="button">−</button>
+        </div>
       </div>
       <div id="readers-panel-body">
         <div id="areas-section">
@@ -336,6 +503,25 @@
         </div>
       </div>
     </div>
+    <dialog id="qr-scan-dialog">
+      <div class="qr-dialog-header">
+        <button type="button" class="qr-dialog-close" id="qr-scan-close" aria-label="Close">×</button>
+      </div>
+      <div class="qr-dialog-body">
+        <p class="qr-dialog-hint">Hold the bracelet QR code in front of the camera. It will scan automatically.</p>
+        <div class="qr-scanner-wrapper">
+          <div id="qr-reader-dialog"></div>
+        </div>
+        <div class="qr-result-box" id="qr-result-box">
+          <span class="qr-result-icon">✓</span>
+          <div class="qr-result-content">
+            <div class="qr-result-label">Scanned successfully</div>
+            <pre id="qr-result-text"></pre>
+          </div>
+        </div>
+        <div class="qr-error-box" id="qr-error-box"></div>
+      </div>
+    </dialog>
     <dialog id="reader-dialog" class="reader-dialog">
       <div class="reader-dialog-content">
         <header class="reader-dialog-header">

@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
         input: {
           main: 'index.html',
           login: 'login.html',
+          qrScan: 'qr-scan.html',
         },
       },
     },

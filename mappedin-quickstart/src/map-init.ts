@@ -1,6 +1,7 @@
 import '@mappedin/mappedin-js/lib/index.css';
 import { getMapData, show3dMap } from '@mappedin/mappedin-js';
 import { api } from './api.ts';
+import { setupQrScanDialog } from './qr-dialog.ts';
 
 const pinSvg = (fill = '#2563eb') => `<svg viewBox="0 0 24 36" fill="${fill}" xmlns="http://www.w3.org/2000/svg">
   <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24c0-6.6-5.4-12-12-12z"/>
@@ -312,11 +313,13 @@ function setupCollapsibleReadersPanel() {
 
   const hitTest = (e: MouseEvent) => {
     const toggleBtnEl = document.getElementById('readers-panel-toggle');
+    const scanBtnEl = document.getElementById('btn-scan-qr');
     const headerEl = document.getElementById('readers-panel-header');
     if (!toggleBtnEl || !headerEl) return;
     const x = e.clientX;
     const y = e.clientY;
     const inRect = (r: DOMRect) => r.left <= x && x <= r.right && r.top <= y && y <= r.bottom;
+    if (scanBtnEl && inRect(scanBtnEl.getBoundingClientRect())) return;
     if (inRect(toggleBtnEl.getBoundingClientRect())) {
       e.preventDefault();
       e.stopPropagation();
@@ -355,4 +358,5 @@ export async function initMap() {
   if (mapView.Outdoor.enabled && !mapView.Outdoor.visible) {
     mapView.Outdoor.show();
   }
+  setupQrScanDialog();
 }

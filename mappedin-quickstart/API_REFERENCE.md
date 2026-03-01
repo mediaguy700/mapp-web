@@ -37,6 +37,13 @@ Everything an application needs to call all endpoints.
 | DELETE | `/readers/{readerName}` | Delete reader | — |
 | GET | `/readers/{readerName}/events` | List events at reader (children) | Optional query: `?direction=in` or `?direction=out` |
 
+### Active BLE
+
+| Method | Path | Description | Body / Response |
+|--------|------|-------------|-----------------|
+| GET | `/active-ble` | List all active BLE records | Returns `{ active_ble: [{ id, mac, fname, lname, active, duration, parent_fname, parent_lname, parent_phone, ... }] }` |
+| POST | `/active-ble` | Create/activate BLE device | `mac` (required, max 17), `fname`, `lname`, `parent_fname`, `parent_lname`, `parent_phone`, `duration` |
+
 ### Events
 
 | Method | Path | Description | Body / Query |
@@ -66,6 +73,9 @@ Everything an application needs to call all endpoints.
 
 **Readers**
 - Create: `{"reader_name": "Lobby-01", "latitude": 40.71, "longitude": -74.01, "display_name": "Main Lobby"}`
+
+**Active BLE**
+- Create: `{"mac": "AA:BB:CC:DD:EE:01", "fname": "John", "lname": "Smith", "parent_fname": "Dad", "parent_lname": "Smith", "parent_phone": "555-1234", "duration": 60}`
 
 **Events**
 - Create: `{"mac": "AA:BB:CC:DD:EE:01", "reader_name": "Lobby-01", "direction": "in", "name": "Alice"}`

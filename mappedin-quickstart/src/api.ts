@@ -1,14 +1,21 @@
 // API: Readers, Events, Auth - see API_REFERENCE.md. In dev, proxy /api to base URL.
+import { getToken } from './auth.ts';
+
 const BASE_URL =
   import.meta.env.DEV
     ? '/api'
     : (import.meta.env.VITE_BLE_API_URL ?? 'https://rkali63t89.execute-api.us-east-2.amazonaws.com/Prod');
 const API_KEY = import.meta.env.VITE_BLE_API_KEY ?? import.meta.env.VITE_API_KEY ?? 'MlzzVbn4og1AN93aBra5pa9OTKZs716j35uFuV1I';
 
-const defaultHeaders: HeadersInit = {
-  'x-api-key': API_KEY,
-  'Content-Type': 'application/json',
-};
+function getHeaders(): HeadersInit {
+  const headers: Record<string, string> = {
+    'x-api-key': API_KEY,
+    'Content-Type': 'application/json',
+  };
+  const token = getToken();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
+}
 
 async function request<T>(
   endpoint: string,
@@ -19,7 +26,7 @@ async function request<T>(
   const response = await fetch(url, {
     ...options,
     headers: {
-      ...defaultHeaders,
+      ...getHeaders(),
       ...options.headers,
     },
   });

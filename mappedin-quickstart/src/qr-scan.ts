@@ -4,8 +4,6 @@ const readerEl = document.getElementById('qr-reader');
 const resultEl = document.getElementById('qr-result');
 const resultTextEl = document.getElementById('qr-result-text');
 const errorEl = document.getElementById('qr-error');
-const btnStart = document.getElementById('btn-start') as HTMLButtonElement | null;
-const btnStop = document.getElementById('btn-stop') as HTMLButtonElement | null;
 
 let html5QrCode: Html5Qrcode | null = null;
 let isScanning = false;
@@ -52,13 +50,13 @@ async function startScanning() {
       cameraId,
       {
         fps: 10,
-        qrbox: { width: 250, height: 250 },
+        qrbox: { width: 180, height: 180 },
       },
       (decodedText) => {
-        showResult(decodedText);
+        const mac = decodedText.trim();
+        showResult(mac);
         stopScanning();
-        btnStart?.removeAttribute('disabled');
-        if (btnStop) btnStop.disabled = true;
+        window.location.href = `./index.html?mac=${encodeURIComponent(mac)}`;
       },
       () => {
         // Ignore scan errors (no QR in frame)
@@ -66,8 +64,6 @@ async function startScanning() {
     );
 
     isScanning = true;
-    if (btnStart) btnStart.disabled = true;
-    if (btnStop) btnStop.disabled = false;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     showError(msg.includes('NotAllowedError') || msg.includes('Permission')
@@ -86,12 +82,7 @@ async function stopScanning() {
   html5QrCode.clear();
   html5QrCode = null;
   isScanning = false;
-  if (btnStart) btnStart.disabled = false;
-  if (btnStop) btnStop.disabled = true;
 }
-
-btnStart?.addEventListener('click', startScanning);
-btnStop?.addEventListener('click', stopScanning);
 
 // Auto-start on load
 startScanning();

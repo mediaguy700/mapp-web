@@ -27,6 +27,7 @@ export function setupQrScanDialog() {
   const activeBleDuration = document.getElementById('active-ble-duration') as HTMLInputElement | null;
   const activeBleSubmit = document.getElementById('active-ble-submit');
   const activeBleError = document.getElementById('active-ble-error');
+  const successDialog = document.getElementById('success-dialog') as HTMLDialogElement | null;
 
   if (!btnScan || !dialog || !readerEl) return;
 
@@ -113,12 +114,14 @@ export function setupQrScanDialog() {
     html5QrCode = null;
   }
 
-  btnScan.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dialog.showModal();
-    startScanner();
-  });
+  if (btnScan.tagName !== 'A' || !btnScan.getAttribute('href')) {
+    btnScan.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dialog.showModal();
+      startScanner();
+    });
+  }
 
   const closeDialog = () => {
     stopScanner();
@@ -182,6 +185,12 @@ export function setupQrScanDialog() {
     try {
       await api.post('active-ble', payload);
       if (activeBleDialog) activeBleDialog.close();
+      if (successDialog) {
+        successDialog.showModal();
+        setTimeout(() => {
+          successDialog.close();
+        }, 5000);
+      }
     } catch (err) {
       if (activeBleError) {
         activeBleError.textContent = err instanceof Error ? err.message : String(err);
@@ -191,4 +200,10 @@ export function setupQrScanDialog() {
       if (activeBleSubmit instanceof HTMLButtonElement) activeBleSubmit.disabled = false;
     }
   });
+
+  const macParam = new URLSearchParams(window.location.search).get('mac');
+  if (macParam && activeBleDialog) {
+    openActiveBleDialog(macParam);
+    window.history.replaceState({}, '', window.location.pathname);
+  }
 }

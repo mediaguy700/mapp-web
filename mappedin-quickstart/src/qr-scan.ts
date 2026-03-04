@@ -5,9 +5,16 @@ const resultEl = document.getElementById('qr-result');
 const resultTextEl = document.getElementById('qr-result-text');
 const errorEl = document.getElementById('qr-error');
 const scannerInput = document.getElementById('qr-scanner-input') as HTMLInputElement | null;
+const modeCamera = document.getElementById('qr-mode-camera');
+const modeUsb = document.getElementById('qr-mode-usb');
+const headerDesc = document.getElementById('qr-header-desc');
+const choiceCamera = document.getElementById('qr-choice-camera');
+const choiceUsb = document.getElementById('qr-choice-usb');
 
 let html5QrCode: Html5Qrcode | null = null;
 let isScanning = false;
+type ScanMode = 'camera' | 'usb' | null;
+let currentMode: ScanMode = null;
 
 function showError(msg: string) {
   if (errorEl) {
@@ -93,6 +100,37 @@ function handleAttachedScanner(value: string) {
   window.location.href = `./index.html?mac=${encodeURIComponent(mac)}`;
 }
 
+function switchMode(mode: ScanMode) {
+  if (mode === currentMode) return;
+  currentMode = mode;
+
+  choiceCamera?.classList.toggle('active', mode === 'camera');
+  choiceUsb?.classList.toggle('active', mode === 'usb');
+  modeCamera?.classList.toggle('active', mode === 'camera');
+  modeUsb?.classList.toggle('active', mode === 'usb');
+
+  if (headerDesc) {
+    headerDesc.textContent =
+      mode === 'camera'
+        ? 'Position a QR code within the frame to scan'
+        : mode === 'usb'
+          ? 'Scan with attached scanner'
+          : '';
+  }
+
+  if (mode === 'camera') {
+    startScanning();
+  } else {
+    stopScanning();
+    if (mode === 'usb') {
+      scannerInput?.focus();
+    }
+  }
+}
+
+choiceCamera?.addEventListener('click', () => switchMode('camera'));
+choiceUsb?.addEventListener('click', () => switchMode('usb'));
+
 scannerInput?.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -103,6 +141,3 @@ scannerInput?.addEventListener('keydown', (e) => {
     }
   }
 });
-
-// Auto-start on load
-startScanning();

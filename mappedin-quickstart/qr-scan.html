@@ -1,19 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>IntraMap - Scan QR Code</title>
+    <title>IntraMap - Pair Bracelet</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      @font-face {
+        font-family: 'Grift';
+        src: url('/fonts/Grift-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Grift';
+        src: url('/fonts/Grift-Medium.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Grift';
+        src: url('/fonts/Grift-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Grift';
+        src: url('/fonts/Grift-Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+      }
+    </style>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body {
         width: 100%;
         min-height: 100vh;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: linear-gradient(165deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+        font-family: 'Grift', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         color: #f8fafc;
       }
       .qr-page {
@@ -23,142 +45,158 @@
         align-items: center;
         justify-content: center;
         padding: 24px;
+        position: relative;
+        background: linear-gradient(165deg, #334155 0%, #475569 40%, #334155 100%);
       }
-      .qr-header {
-        text-align: center;
-        margin-bottom: 24px;
+      .qr-bg {
+        position: absolute;
+        inset: -10%;
+        background: url('./splash-map-bg.png') center center no-repeat;
+        background-size: cover;
+        animation: qr-pan 30s ease-in-out infinite;
+        opacity: 0.24;
+        filter: brightness(0.95) contrast(1.4) saturate(1.2);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
       }
-      .qr-header h1 {
-        font-size: 24px;
-        font-weight: 700;
-        color: #f8fafc;
-        margin-bottom: 8px;
+      .qr-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(71,85,105,0.2) 0%, transparent 40%, rgba(71,85,105,0.25) 100%);
       }
-      .qr-header p {
-        font-size: 14px;
-        color: #94a3b8;
+      .qr-bg::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(71,85,105,0.4) 100%);
       }
-      .qr-scanner-wrap {
+      @keyframes qr-pan {
+        0%, 100% { transform: scale(1) translate(0, 0) translateZ(0); }
+        25% { transform: scale(1.05) translate(2%, 1%) translateZ(0); }
+        50% { transform: scale(1.08) translate(-1%, 2%) translateZ(0); }
+        75% { transform: scale(1.05) translate(1%, -1%) translateZ(0); }
+      }
+      .qr-page > *:not(.qr-bg) {
+        position: relative;
+        z-index: 1;
+      }
+      .qr-dialog {
         width: 100%;
-        max-width: 280px;
-        aspect-ratio: 1;
-        border-radius: 20px;
-        overflow: hidden;
-        background: #0f172a;
-        border: 2px solid rgba(14, 165, 233, 0.3);
-        box-shadow: 0 0 40px rgba(14, 165, 233, 0.15);
-        margin-bottom: 24px;
+        max-width: 360px;
+        background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+        border-radius: 24px;
+        border: 3px solid rgba(255,255,255,1);
+        box-shadow:
+          0 0 0 1px rgba(14,165,233,0.4),
+          0 0 0 4px rgba(255,255,255,0.5),
+          0 48px 96px rgba(0,0,0,0.45),
+          0 24px 48px rgba(0,0,0,0.35),
+          0 0 120px rgba(14,165,233,0.25),
+          0 0 200px rgba(14,165,233,0.12);
+        padding: 32px 28px 36px;
+        animation: qr-dialog-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
-      #qr-reader {
-        width: 100% !important;
-        height: 100% !important;
+      .qr-dialog .qr-header { text-align: center; margin-bottom: 24px; }
+      .qr-dialog .qr-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 12px; color: #0ea5e9; }
+      .qr-dialog .qr-header .qr-header-bar {
+        width: 48px; height: 4px; margin: 0 auto 12px; border-radius: 2px;
+        background: linear-gradient(90deg, #7dd3fc, #38bdf8);
       }
-      #qr-reader video {
-        border-radius: 18px;
+      .qr-dialog .qr-header p { font-size: 14px; color: #64748b; }
+      .qr-dialog .qr-choice-wrap { display: flex; gap: 12px; margin-bottom: 24px; }
+      .qr-dialog .qr-choice-btn {
+        flex: 1; min-width: 120px; padding: 16px 20px; font-size: 14px; font-weight: 600;
+        font-family: inherit; border-radius: 12px; cursor: pointer; transition: all 0.2s;
+        color: #64748b; background: #f1f5f9; border: 2px solid #e2e8f0;
       }
-      .qr-result {
-        width: 100%;
-        max-width: 280px;
-        padding: 20px;
-        background: rgba(34, 197, 94, 0.1);
-        border: 1px solid rgba(34, 197, 94, 0.3);
-        border-radius: 14px;
-        margin-bottom: 24px;
-        display: none;
+      .qr-dialog #qr-choice-camera { color: #4ade80; }
+      .qr-dialog #qr-choice-usb { color: #eab308; }
+      .qr-dialog .qr-choice-btn:hover {
+        color: #0f172a; border-color: #0ea5e9; background: rgba(14, 165, 233, 0.06);
       }
-      .qr-result.show {
-        display: block;
+      .qr-dialog .qr-choice-btn.active {
+        color: #0284c7; border-color: #0ea5e9; background: rgba(14, 165, 233, 0.1);
       }
-      .qr-result h3 {
-        font-size: 14px;
-        font-weight: 600;
-        color: #22c55e;
-        margin-bottom: 8px;
+      .qr-dialog .qr-scanner-wrap {
+        width: 100%; max-width: 280px; aspect-ratio: 1; border-radius: 20px; overflow: hidden;
+        background: #0f172a; border: 2px solid rgba(14, 165, 233, 0.3);
+        box-shadow: 0 0 40px rgba(14, 165, 233, 0.15); margin-bottom: 24px;
       }
-      .qr-result pre {
-        font-size: 12px;
-        color: #e2e8f0;
-        white-space: pre-wrap;
-        word-break: break-all;
-      }
-      .qr-error {
-        padding: 16px;
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        border-radius: 12px;
-        color: #fca5a5;
-        font-size: 14px;
-        margin-bottom: 24px;
-        display: none;
-      }
-      .qr-error.show {
-        display: block;
-      }
-      .qr-scanner-input-wrap {
-        width: 100%;
-        max-width: 280px;
-        margin-bottom: 24px;
-      }
-      .qr-scanner-input-wrap label {
-        display: block;
-        font-size: 12px;
-        font-weight: 600;
-        color: #94a3b8;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .qr-scanner-input-wrap input {
-        width: 100%;
-        padding: 14px 16px;
-        font-size: 16px;
+      .qr-dialog .qr-scanner-input-wrap { width: 100%; max-width: 280px; margin-bottom: 24px; }
+      .qr-dialog .qr-scanner-input-wrap input {
+        width: 100%; padding: 14px 16px; font-size: 16px;
         font-family: 'SF Mono', 'Monaco', ui-monospace, monospace;
-        background: rgba(15, 23, 42, 0.6);
-        border: 2px solid rgba(14, 165, 233, 0.3);
-        border-radius: 12px;
-        color: #f8fafc;
-        outline: none;
+        background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 12px;
+        color: #0f172a; outline: none;
       }
-      .qr-scanner-input-wrap input:focus {
-        border-color: #0ea5e9;
-        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+      .qr-dialog .qr-scanner-input-wrap input:focus {
+        border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
       }
-      .qr-scanner-input-wrap input::placeholder {
-        color: #64748b;
+      .qr-dialog .qr-scanner-input-wrap input::placeholder { color: #94a3b8; }
+      .qr-dialog .qr-result {
+        width: 100%; max-width: 280px; padding: 20px; border-radius: 14px; margin-bottom: 24px;
+        display: none; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25);
       }
-      .qr-back {
-        padding-top: 24px;
+      .qr-dialog .qr-result.show { display: block; }
+      .qr-dialog .qr-result h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #16a34a; }
+      .qr-dialog .qr-result pre { font-size: 12px; color: #334155; white-space: pre-wrap; word-break: break-all; }
+      .qr-dialog .qr-error {
+        padding: 16px; border-radius: 12px; font-size: 14px; margin-bottom: 24px; display: none;
+        background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); color: #dc2626;
       }
+      .qr-dialog .qr-error.show { display: block; }
+      @keyframes qr-dialog-appear {
+        from { opacity: 0; transform: translateY(16px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      #qr-reader { width: 100% !important; height: 100% !important; }
+      #qr-reader video { border-radius: 18px; }
+      .qr-mode-camera, .qr-mode-usb { display: none; }
+      .qr-mode-camera.active, .qr-mode-usb.active { display: block; }
+      .qr-back { margin-top: 20px; }
       .qr-back a {
-        color: #94a3b8;
+        color: rgba(248,250,252,0.9);
         font-size: 14px;
         text-decoration: none;
         transition: color 0.2s;
       }
       .qr-back a:hover {
-        color: #0ea5e9;
+        color: #7dd3fc;
       }
     </style>
   </head>
   <body>
     <div class="qr-page">
-      <header class="qr-header">
-        <h1>Scan QR Code</h1>
-        <p>Position a QR code within the frame to scan</p>
-      </header>
+      <div class="qr-bg"></div>
+      <div class="qr-dialog">
+        <header class="qr-header">
+          <h1>Pair Bracelet</h1>
+          <div class="qr-header-bar"></div>
+          <p id="qr-header-desc"></p>
+        </header>
 
-      <div id="qr-reader" class="qr-scanner-wrap"></div>
+        <div class="qr-choice-wrap">
+          <button type="button" class="qr-choice-btn" id="qr-choice-camera" data-mode="camera">Camera</button>
+          <button type="button" class="qr-choice-btn" id="qr-choice-usb" data-mode="usb">Scanner</button>
+        </div>
 
-      <div class="qr-scanner-input-wrap">
-        <label for="qr-scanner-input">Or use USB/attached scanner</label>
-        <input type="text" id="qr-scanner-input" placeholder="Focus here and scan with USB scanner..." autocomplete="off" />
-      </div>
+        <div id="qr-mode-camera" class="qr-mode-camera">
+          <div id="qr-reader" class="qr-scanner-wrap"></div>
+        </div>
 
-      <div id="qr-error" class="qr-error" role="alert"></div>
+        <div id="qr-mode-usb" class="qr-mode-usb">
+          <div class="qr-scanner-input-wrap">
+            <input type="text" id="qr-scanner-input" placeholder="Scan with scanner..." autocomplete="off" />
+          </div>
+        </div>
 
-      <div id="qr-result" class="qr-result">
-        <h3>Scanned successfully</h3>
-        <pre id="qr-result-text"></pre>
+        <div id="qr-error" class="qr-error" role="alert"></div>
+
+        <div id="qr-result" class="qr-result">
+          <h3>Scanned successfully</h3>
+          <pre id="qr-result-text"></pre>
+        </div>
       </div>
 
       <div class="qr-back">

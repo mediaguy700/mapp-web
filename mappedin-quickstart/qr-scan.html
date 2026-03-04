@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>IntraMap - Pair Bracelet</title>
+    <title>IntraMap - Bracelet Activation</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
@@ -30,12 +30,16 @@
         font-style: normal;
       }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
       html, body {
         width: 100%;
         min-height: 100vh;
-        font-family: 'Grift', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family: 'Grift', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         color: #f8fafc;
       }
       .qr-page {
@@ -44,9 +48,9 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 24px;
+        padding: 32px 24px;
         position: relative;
-        background: linear-gradient(165deg, #334155 0%, #475569 40%, #334155 100%);
+        background: linear-gradient(165deg, #1e293b 0%, #334155 50%, #1e293b 100%);
       }
       .qr-bg {
         position: absolute;
@@ -54,8 +58,8 @@
         background: url('./splash-map-bg.png') center center no-repeat;
         background-size: cover;
         animation: qr-pan 30s ease-in-out infinite;
-        opacity: 0.24;
-        filter: brightness(0.95) contrast(1.4) saturate(1.2);
+        opacity: 0.18;
+        filter: brightness(0.9) contrast(1.4) saturate(1.1);
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
       }
@@ -63,13 +67,13 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(71,85,105,0.2) 0%, transparent 40%, rgba(71,85,105,0.25) 100%);
+        background: linear-gradient(180deg, rgba(30,41,59,0.4) 0%, transparent 50%, rgba(30,41,59,0.3) 100%);
       }
       .qr-bg::after {
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(71,85,105,0.4) 100%);
+        background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 50%, rgba(30,41,59,0.5) 100%);
       }
       @keyframes qr-pan {
         0%, 100% { transform: scale(1) translate(0, 0) translateZ(0); }
@@ -77,108 +81,232 @@
         50% { transform: scale(1.08) translate(-1%, 2%) translateZ(0); }
         75% { transform: scale(1.05) translate(1%, -1%) translateZ(0); }
       }
-      .qr-page > *:not(.qr-bg) {
-        position: relative;
-        z-index: 1;
-      }
+      .qr-page > *:not(.qr-bg) { position: relative; z-index: 1; }
       .qr-dialog {
         width: 100%;
-        max-width: 360px;
-        background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
-        border-radius: 24px;
-        border: 3px solid rgba(255,255,255,1);
-        box-shadow:
-          0 0 0 1px rgba(14,165,233,0.4),
-          0 0 0 4px rgba(255,255,255,0.5),
-          0 48px 96px rgba(0,0,0,0.45),
-          0 24px 48px rgba(0,0,0,0.35),
-          0 0 120px rgba(14,165,233,0.25),
-          0 0 200px rgba(14,165,233,0.12);
-        padding: 32px 28px 36px;
-        animation: qr-dialog-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-width: 400px;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 10px 20px -5px rgba(0,0,0,0.1);
+        padding: 40px 32px;
+        animation: qr-dialog-appear 0.25s ease-out;
+        overflow: hidden;
       }
-      .qr-dialog .qr-header { text-align: center; margin-bottom: 24px; }
-      .qr-dialog .qr-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 12px; color: #0ea5e9; }
+      .qr-dialog .qr-header {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+      .qr-dialog .qr-header h1 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+      }
       .qr-dialog .qr-header .qr-header-bar {
-        width: 48px; height: 4px; margin: 0 auto 12px; border-radius: 2px;
-        background: linear-gradient(90deg, #7dd3fc, #38bdf8);
+        width: 40px;
+        height: 3px;
+        margin: 0 auto 14px;
+        border-radius: 2px;
+        background: #0ea5e9;
       }
-      .qr-dialog .qr-header p { font-size: 14px; color: #64748b; }
-      .qr-dialog .qr-choice-wrap { display: flex; gap: 12px; margin-bottom: 24px; }
+      .qr-dialog .qr-header p {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.5;
+      }
+      .qr-dialog .qr-choice-wrap {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
       .qr-dialog .qr-choice-btn {
-        flex: 1; min-width: 120px; padding: 16px 20px; font-size: 14px; font-weight: 600;
-        font-family: inherit; border-radius: 12px; cursor: pointer; transition: all 0.2s;
-        color: #64748b; background: #f1f5f9; border: 2px solid #e2e8f0;
+        flex: 1;
+        min-width: 0;
+        padding: 16px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #475569;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
       }
-      .qr-dialog #qr-choice-camera { color: #4ade80; }
-      .qr-dialog #qr-choice-usb { color: #eab308; }
       .qr-dialog .qr-choice-btn:hover {
-        color: #0f172a; border-color: #0ea5e9; background: rgba(14, 165, 233, 0.06);
+        color: #0f172a;
+        border-color: #cbd5e1;
+        background: #f1f5f9;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      }
+      .qr-dialog .qr-choice-btn:focus-visible {
+        outline: 2px solid #0ea5e9;
+        outline-offset: 2px;
       }
       .qr-dialog .qr-choice-btn.active {
-        color: #0284c7; border-color: #0ea5e9; background: rgba(14, 165, 233, 0.1);
+        color: #0284c7;
+        border-color: #0ea5e9;
+        background: #f0f9ff;
+        box-shadow: 0 0 0 1px rgba(14,165,233,0.2);
       }
       .qr-dialog .qr-scanner-wrap {
-        width: 100%; max-width: 280px; aspect-ratio: 1; border-radius: 20px; overflow: hidden;
-        background: #0f172a; border: 2px solid rgba(14, 165, 233, 0.3);
-        box-shadow: 0 0 40px rgba(14, 165, 233, 0.15); margin-bottom: 24px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 24px;
+        aspect-ratio: 1;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #0f172a;
+        border: 2px solid #334155;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       }
-      .qr-dialog .qr-scanner-input-wrap { width: 100%; max-width: 280px; margin-bottom: 24px; }
+      .qr-dialog .qr-scanner-input-wrap {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 24px;
+        position: relative;
+      }
       .qr-dialog .qr-scanner-input-wrap input {
-        width: 100%; padding: 14px 16px; font-size: 16px;
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 15px;
         font-family: 'SF Mono', 'Monaco', ui-monospace, monospace;
-        background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 12px;
-        color: #0f172a; outline: none;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        color: #0f172a;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .qr-dialog .qr-scanner-input-wrap input:hover {
+        border-color: #cbd5e1;
       }
       .qr-dialog .qr-scanner-input-wrap input:focus {
-        border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
       }
-      .qr-dialog .qr-scanner-input-wrap input::placeholder { color: #94a3b8; }
+      .qr-dialog .qr-scanner-input-wrap .qr-scanner-instruction {
+        font-size: 17px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0;
+        padding: 28px 24px;
+        text-align: center;
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 2px dashed #94a3b8;
+        border-radius: 14px;
+        animation: qr-scan-pulse 2s ease-in-out infinite;
+      }
+      @keyframes qr-scan-pulse {
+        0%, 100% { border-color: #94a3b8; box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+        50% { border-color: #0ea5e9; box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15); }
+      }
+      .qr-dialog .qr-scanner-input-wrap .qr-scanner-input-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
       .qr-dialog .qr-result {
-        width: 100%; max-width: 280px; padding: 20px; border-radius: 14px; margin-bottom: 24px;
-        display: none; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25);
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 24px;
+        padding: 18px 20px;
+        border-radius: 12px;
+        display: none;
+        background: #f0fdf4;
+        border: 1px solid #86efac;
+        animation: qr-fade-in 0.3s ease;
       }
       .qr-dialog .qr-result.show { display: block; }
-      .qr-dialog .qr-result h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #16a34a; }
-      .qr-dialog .qr-result pre { font-size: 12px; color: #334155; white-space: pre-wrap; word-break: break-all; }
+      .qr-dialog .qr-result h3 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #15803d;
+      }
+      .qr-dialog .qr-result pre {
+        font-size: 13px;
+        color: #166534;
+        white-space: pre-wrap;
+        word-break: break-all;
+        line-height: 1.5;
+      }
       .qr-dialog .qr-error {
-        padding: 16px; border-radius: 12px; font-size: 14px; margin-bottom: 24px; display: none;
-        background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); color: #dc2626;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 24px;
+        padding: 16px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        display: none;
+        background: #fef2f2;
+        border: 1px solid #fca5a5;
+        color: #b91c1c;
       }
       .qr-dialog .qr-error.show { display: block; }
       @keyframes qr-dialog-appear {
-        from { opacity: 0; transform: translateY(16px) scale(0.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from { opacity: 0; transform: scale(0.96); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      @keyframes qr-fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
       #qr-reader { width: 100% !important; height: 100% !important; }
-      #qr-reader video { border-radius: 18px; }
+      #qr-reader video { border-radius: 14px; }
       .qr-mode-camera, .qr-mode-usb { display: none; }
       .qr-mode-camera.active, .qr-mode-usb.active { display: block; }
-      .qr-back { margin-top: 20px; }
+      .qr-dialog.qr-scanner-focus .qr-header,
+      .qr-dialog.qr-scanner-focus .qr-choice-wrap,
+      .qr-dialog.qr-scanner-focus .qr-mode-camera {
+        display: none !important;
+      }
+      .qr-dialog.qr-scanner-focus .qr-error:not(.show),
+      .qr-dialog.qr-scanner-focus .qr-result:not(.show) {
+        display: none !important;
+      }
+      .qr-back {
+        margin-top: 24px;
+      }
       .qr-back a {
         color: rgba(248,250,252,0.9);
         font-size: 14px;
+        font-weight: 500;
         text-decoration: none;
         transition: color 0.2s;
       }
       .qr-back a:hover {
-        color: #7dd3fc;
+        color: #fff;
+      }
+      .qr-back a:focus-visible {
+        outline: 2px solid #7dd3fc;
+        outline-offset: 2px;
+        border-radius: 4px;
       }
     </style>
   </head>
   <body>
-    <div class="qr-page">
+    <div class="qr-page" id="qr-page">
       <div class="qr-bg"></div>
-      <div class="qr-dialog">
+      <div class="qr-dialog" id="qr-dialog">
         <header class="qr-header">
-          <h1>Pair Bracelet</h1>
+          <h1>Bracelet Activation</h1>
           <div class="qr-header-bar"></div>
           <p id="qr-header-desc"></p>
         </header>
 
         <div class="qr-choice-wrap">
           <button type="button" class="qr-choice-btn" id="qr-choice-camera" data-mode="camera">Camera</button>
-          <button type="button" class="qr-choice-btn" id="qr-choice-usb" data-mode="usb">Scanner</button>
+          <button type="button" class="qr-choice-btn" id="qr-choice-usb" data-mode="usb">Barcode Scanner</button>
         </div>
 
         <div id="qr-mode-camera" class="qr-mode-camera">
@@ -187,20 +315,21 @@
 
         <div id="qr-mode-usb" class="qr-mode-usb">
           <div class="qr-scanner-input-wrap">
-            <input type="text" id="qr-scanner-input" placeholder="Scan with scanner..." autocomplete="off" />
+            <p class="qr-scanner-instruction">Scan bracelet QR code</p>
+            <input type="text" id="qr-scanner-input" class="qr-scanner-input-hidden" placeholder="" autocomplete="off" aria-label="Barcode scanner input" />
           </div>
         </div>
 
         <div id="qr-error" class="qr-error" role="alert"></div>
 
         <div id="qr-result" class="qr-result">
-          <h3>Scanned successfully</h3>
+          <h3>Activation successful</h3>
           <pre id="qr-result-text"></pre>
         </div>
       </div>
 
       <div class="qr-back">
-        <a href="./index.html">← Back to map</a>
+        <a href="./index.html">← Return to map</a>
       </div>
     </div>
     <script type="module" src="/src/qr-scan.ts"></script>

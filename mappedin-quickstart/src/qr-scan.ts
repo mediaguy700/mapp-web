@@ -10,6 +10,8 @@ const modeUsb = document.getElementById('qr-mode-usb');
 const headerDesc = document.getElementById('qr-header-desc');
 const choiceCamera = document.getElementById('qr-choice-camera');
 const choiceUsb = document.getElementById('qr-choice-usb');
+const dialogEl = document.getElementById('qr-dialog');
+const pageEl = document.getElementById('qr-page');
 
 let html5QrCode: Html5Qrcode | null = null;
 let isScanning = false;
@@ -48,7 +50,7 @@ async function startScanning() {
 
     const cameras = await Html5Qrcode.getCameras();
     if (!cameras?.length) {
-      showError('No camera found. Please allow camera access.');
+      showError('No camera detected. Please enable camera access in your device settings.');
       return;
     }
 
@@ -75,7 +77,7 @@ async function startScanning() {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     showError(msg.includes('NotAllowedError') || msg.includes('Permission')
-      ? 'Camera access denied. Please allow camera permissions and try again.'
+      ? 'Camera access denied. Please enable camera permissions in your browser settings and try again.'
       : `Failed to start camera: ${msg}`);
   }
 }
@@ -108,13 +110,16 @@ function switchMode(mode: ScanMode) {
   choiceUsb?.classList.toggle('active', mode === 'usb');
   modeCamera?.classList.toggle('active', mode === 'camera');
   modeUsb?.classList.toggle('active', mode === 'usb');
+  const focus = mode === 'usb';
+  dialogEl?.classList.toggle('qr-scanner-focus', focus);
+  pageEl?.classList.toggle('qr-scanner-focus', focus);
 
   if (headerDesc) {
     headerDesc.textContent =
       mode === 'camera'
-        ? 'Position a QR code within the frame to scan'
+        ? 'Position bracelet QR code within the frame'
         : mode === 'usb'
-          ? 'Scan with attached scanner'
+          ? ''
           : '';
   }
 

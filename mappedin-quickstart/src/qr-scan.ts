@@ -4,6 +4,7 @@ const readerEl = document.getElementById('qr-reader');
 const resultEl = document.getElementById('qr-result');
 const resultTextEl = document.getElementById('qr-result-text');
 const errorEl = document.getElementById('qr-error');
+const scannerInput = document.getElementById('qr-scanner-input') as HTMLInputElement | null;
 
 let html5QrCode: Html5Qrcode | null = null;
 let isScanning = false;
@@ -83,6 +84,25 @@ async function stopScanning() {
   html5QrCode = null;
   isScanning = false;
 }
+
+function handleAttachedScanner(value: string) {
+  const mac = value.trim();
+  if (!mac) return;
+  showResult(mac);
+  stopScanning();
+  window.location.href = `./index.html?mac=${encodeURIComponent(mac)}`;
+}
+
+scannerInput?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const value = scannerInput.value.trim();
+    if (value) {
+      handleAttachedScanner(value);
+      scannerInput.value = '';
+    }
+  }
+});
 
 // Auto-start on load
 startScanning();
